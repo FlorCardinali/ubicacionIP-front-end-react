@@ -1,16 +1,38 @@
-# React + Vite
+# 📍 Localizador de IP con Mapa Interactivo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es un proyecto Full-Stack desarrollado con el stack ERN (Express, React, Node) que permite a los usuarios buscar y visualizar la ubicación geográfica de cualquier dirección IP pública, mostrando el resultado en un mapa interactivo.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌟 Características Principales
 
-## React Compiler
+* **Geolocalización Asíncrona:** El Frontend llama a un API Gateway (Backend Express) que consulta una API externa para obtener datos de ubicación (País, Ciudad, Coordenadas).
+* **Diseño Moderno y Responsivo:** Implementado con **Tailwind CSS** para un desarrollo rápido y escalable. Utiliza un tema oscuro (Dark Mode) con gradientes de color.
+* **Visualización con Google Maps:** La latitud y longitud obtenidas se muestran inmediatamente en un mapa incrustado (`<iframe>`).
+* **Separación de Lógica:** La aplicación usa el patrón *Lifting State Up* para gestionar el estado de la aplicación desde el componente principal (`App.jsx`), permitiendo que los componentes hermanos (`LocalizadorIP` y `MapaUbicacion`) compartan datos sin acoplamiento.
+* **Manejo de Errores Robustos:** Implementación de manejo de excepciones en el Backend para IPs reservadas/inválidas (ej. 254.x.x.x) y manejo de errores de conexión.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Tecnologías Utilizadas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Frontend (client/)
+* **React.js:** Librería principal de la interfaz de usuario.
+* **Vite:** Herramienta de *bundling* rápido.
+* **Tailwind CSS (v4):** Para el diseño y estilos.
+
+### Backend (server/)
+* **Node.js & Express:** Servidor API Gateway.
+* **`node-fetch`:** Para realizar llamadas HTTP a la API externa.
+* **`dotenv`:** Para la gestión segura de variables de entorno (API Keys).
+* **`cors`:** Para gestionar la política de *Cross-Origin Resource Sharing* entre el Frontend y el Backend.
+
+---
+
+## ⚙️ Instalación y Configuración
+
+El proyecto está dividido en dos repositorios separados: `server/` (Backend) y `client/` (Frontend). Ambos deben ejecutarse simultáneamente.
+
+### 1. Variables de Entorno
+
+Crea un archivo llamado `.env` en la raíz de la carpeta **`server/`** y añade tu clave de API para la geolocalización:
