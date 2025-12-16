@@ -4,20 +4,46 @@ import styles from "./App.module.css"
 import MapaUbicacion from "./MapaUbicacion";
 import { useState, useEffect } from "react";
 
+// URL de una API simple para obtener la IP pública
+const URL_API_IP_PUBLICA = 'https://api.ipify.org?format=json';
+
+// Función para obtener la IP del usuario
+const obtenerIPUsuario = async () => {
+    try {
+        const respuesta = await fetch(URL_API_IP_PUBLICA);
+        const data = await respuesta.json();
+        // data.ip contendrá la IP pública (ej: 203.0.113.45)
+        return data.ip; 
+    } catch (error) {
+        console.error("No se pudo obtener la IP del usuario:", error);
+        // Retornar la IP de Google (8.8.8.8) como fallback si hay error de conexión
+        return '8.8.8.8'; 
+    }
+};
+
 const App = () => {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
-    const [ipInput, setIpInput] = useState('8.8.8.8'); 
-    const [ipBuscar, setIpBuscar] = useState('8.8.8.8'); 
+    const [ipInput, setIpInput] = useState(''); 
+    const [ipBuscar, setIpBuscar] = useState(''); 
     const [ubicacion, setUbicacion] = useState(null); 
-    const [estadoCarga, setEstadoCarga] = useState('');
+    const [estadoCarga, setEstadoCarga] = useState('inicializando');
     const [error, setError] = useState(null); 
     
     const esIPValida = (ip) => {
       const regex = /^(\d{1,3}\.){3}\d{1,3}$/;
       return regex.test(ip);
     };
-    
+    //inicializando el sistema
+    useEffect(() => {
+      const inicializarApp = async () => {
+        setEstadoCarga('cargando');
+        const ipDelUsuario = await obtenerIPUsuario();
+        setIpInput(ipDelUsuario);
+        setIpBuscar(ipDelUsuario); 
+      };
+        inicializarApp();
+    }, []);
     
     useEffect(() => {
       if (!esIPValida(ipBuscar)) {
